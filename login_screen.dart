@@ -6,15 +6,24 @@ import 'package:mentor_match/home_signin_widget.dart';
 import 'package:mentor_match/create_login.dart';
 import 'package:mentor_match/mentor_match_icons.dart';
 import 'menu_frame.dart';
+import 'QuizHome.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return Material(
       child: Container(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.only(left: 30, right: 30, bottom: 30, top: 100),
+            padding: EdgeInsets.only(
+                left: 30 * widthFactor,
+                right: 30 * widthFactor,
+                bottom: 30 * heightFactor,
+                top: 100 * heightFactor),
             child: Column(
               //crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -27,15 +36,15 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
-                      child: Text(
-                        'Log in',
-                        style: TextStyle(
-                            fontSize: 33.0,
-                            fontWeight: FontWeight.normal,
-                            color: Color.fromRGBO(112, 112, 112, 1.0)),
-                      ),
-                    )
+                        padding: EdgeInsets.only(bottom: 20.0 * heightFactor),
+                        child: Text(
+                          'Log in',
+                          style: TextStyle(
+                            fontSize: 33.0 * widthFactor,
+                            fontWeight: FontWeight.w500,
+                            color: Constants.darkgray,
+                          ),
+                        ))
 
                     //Text(
                     //  '',
@@ -61,16 +70,16 @@ class LoginScreen extends StatelessWidget {
                             child: Text(
                               'Username',
                               style: TextStyle(
-                                  fontSize: 13.0,
+                                  fontSize: 13.0 * widthFactor,
                                   fontWeight: FontWeight.normal,
                                   color: Color.fromRGBO(132, 132, 132, 1.0)),
                             ),
                           ),
-                          SizedBox(height: 3),
+                          SizedBox(height: 3 * heightFactor),
                           Stack(children: <Widget>[
                             Container(
-                              width: 281.0,
-                              height: 61.0,
+                              width: 351 * widthFactor,
+                              height: 61.0 * heightFactor,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: const Color(0xffffffff),
@@ -80,7 +89,10 @@ class LoginScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  left: 15, right: 15, top: 20, bottom: 0),
+                                  left: 15 * widthFactor,
+                                  right: 15 * widthFactor,
+                                  top: 20 * heightFactor,
+                                  bottom: 0 * heightFactor),
                               child: TextFormField(
                                 decoration: InputDecoration.collapsed(
                                   hintText: 'Enter your username',
@@ -92,26 +104,26 @@ class LoginScreen extends StatelessWidget {
                             )
                           ]),
                           Padding(
-                            padding: EdgeInsets.only(top: 15.0),
+                            padding: EdgeInsets.only(top: 15.0 * heightFactor),
                             child: Column(children: <Widget>[
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Password',
                                   style: TextStyle(
-                                      fontSize: 13.0,
+                                      fontSize: 13.0 * widthFactor,
                                       fontWeight: FontWeight.normal,
                                       color:
                                           Color.fromRGBO(132, 132, 132, 1.0)),
                                 ),
                               ),
-                              SizedBox(height: 3),
+                              SizedBox(height: 3 * heightFactor),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Stack(children: <Widget>[
                                   Container(
-                                    width: 281.0,
-                                    height: 61.0,
+                                    width: 351.0 * widthFactor,
+                                    height: 61.0 * heightFactor,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
                                       color: const Color(0xffffffff),
@@ -122,10 +134,10 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        left: 15,
-                                        right: 15,
-                                        top: 20,
-                                        bottom: 0),
+                                        left: 15 * widthFactor,
+                                        right: 15 * widthFactor,
+                                        top: 20 * heightFactor,
+                                        bottom: 0 * heightFactor),
                                     child: TextFormField(
                                       decoration: InputDecoration.collapsed(
                                         hintText: 'Enter your password',
@@ -141,14 +153,18 @@ class LoginScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => QuizHome()),
+                              );
                             },
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
                                 padding: EdgeInsets.only(
-                                  right: 18,
-                                  top: 15,
+                                  right: 0 * widthFactor,
+                                  top: 15 * heightFactor,
                                 ),
                                 child: Container(
                                   child: Center(
@@ -156,14 +172,14 @@ class LoginScreen extends StatelessWidget {
                                       'LOG IN',
                                       style: TextStyle(
                                         fontFamily: 'Segoe UI',
-                                        fontSize: 17,
+                                        fontSize: 18 * widthFactor,
                                         color: Colors.white,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
-                                  width: 106.0,
-                                  height: 40.0,
+                                  width: 106.0 * widthFactor,
+                                  height: 50.0 * heightFactor,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(41.0),
                                     color: Constants.mainblue,
@@ -180,12 +196,13 @@ class LoginScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(top: 50),
+                                    padding:
+                                        EdgeInsets.only(top: 50 * heightFactor),
                                     child: Text(
                                       '- OR SIGN IN WITH -',
                                       style: TextStyle(
                                         fontFamily: 'Segoe UI',
-                                        fontSize: 14,
+                                        fontSize: 14 * widthFactor,
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -193,16 +210,17 @@ class LoginScreen extends StatelessWidget {
                                 ]),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(top: 16),
+                              padding: EdgeInsets.only(top: 16 * heightFactor),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Padding(
-                                    padding: EdgeInsets.only(left: 0),
+                                    padding:
+                                        EdgeInsets.only(left: 0 * widthFactor),
                                     child: Container(
-                                      width: 70.0,
-                                      height: 70.0,
+                                      width: 70.0 * widthFactor,
+                                      height: 70.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),
@@ -218,10 +236,11 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding:
+                                        EdgeInsets.only(left: 10 * widthFactor),
                                     child: Container(
-                                      width: 70.0,
-                                      height: 70.0,
+                                      width: 70.0 * widthFactor,
+                                      height: 70.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),
@@ -237,10 +256,11 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 10),
+                                    padding:
+                                        EdgeInsets.only(left: 10 * widthFactor),
                                     child: Container(
-                                      width: 70.0,
-                                      height: 70.0,
+                                      width: 70.0 * widthFactor,
+                                      height: 70.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),

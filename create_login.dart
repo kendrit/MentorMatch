@@ -13,33 +13,36 @@ class _CreateLoginState extends State<CreateLogin> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: new EdgeInsets.all(5),
       child: Column(
         children: <Widget>[
-          Text(
-            'CREATE YOUR LOGIN',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 26.0,
-                fontWeight: FontWeight.w700),
-          ),
+          //Text(
+          //  '',
+          //  style: TextStyle(
+          //      color: Color.fromRGBO(0, 90, 255, 1.0),
+          //      fontSize: 22.0,
+          //      fontWeight: FontWeight.w700),
+          //  textAlign: TextAlign.left,
+          //),
           TextField(
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                 ),
               ),
               hintText: 'Enter Username',
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-              focusColor: Colors.white,
+              hintStyle: TextStyle(
+                  color: Color.fromRGBO(54, 125, 255, 1.0).withOpacity(1.0)),
+              focusColor: Color.fromRGBO(0, 90, 255, 1.0),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                 ),
               ),
             ),
             style: TextStyle(
-              color: Colors.white,
+              color: Color.fromRGBO(0, 90, 255, 1.0),
               fontSize: 22.0,
             ),
           ),
@@ -48,20 +51,21 @@ class _CreateLoginState extends State<CreateLogin> {
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                 ),
               ),
               hintText: 'Password',
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-              focusColor: Colors.white,
+              hintStyle: TextStyle(
+                  color: Color.fromRGBO(54, 125, 255, 1.0).withOpacity(1.0)),
+              focusColor: Color.fromRGBO(0, 90, 255, 1.0),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(54, 125, 255, 1.0),
                 ),
               ),
             ),
             style: TextStyle(
-              color: Colors.white,
+              color: Color.fromRGBO(0, 90, 255, 1.0),
               fontSize: 22.0,
             ),
           ),
@@ -70,27 +74,28 @@ class _CreateLoginState extends State<CreateLogin> {
             decoration: InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                 ),
               ),
               hintText: 'Re-Enter Password',
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
-              focusColor: Colors.white,
+              hintStyle: TextStyle(
+                  color: Color.fromRGBO(54, 125, 255, 1.0).withOpacity(1.0)),
+              focusColor: Color.fromRGBO(0, 90, 255, 1.0),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                 ),
               ),
             ),
             style: TextStyle(
-              color: Colors.white,
+              color: Color.fromRGBO(0, 90, 255, 1.0),
               fontSize: 22.0,
             ),
           ),
           Row(
             children: <Widget>[
               Checkbox(
-                activeColor: Colors.orange,
+                activeColor: Color.fromRGBO(0, 90, 255, 1.0),
                 value: _termsAgreed,
                 onChanged: (newValue) {
                   setState(() {
@@ -99,9 +104,9 @@ class _CreateLoginState extends State<CreateLogin> {
                 },
               ),
               Text(
-                'Agreed to Terms & Conditions',
+                'I Agree to the Terms & Conditions',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color.fromRGBO(54, 125, 255, 0.9),
                   fontSize: 16.0,
                 ),
               ),
@@ -113,17 +118,27 @@ class _CreateLoginState extends State<CreateLogin> {
               Text(
                 'CANCEL',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color.fromRGBO(0, 90, 255, 1.0),
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('SAVE')
+              Text(
+                'SAVE',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           Text(
-            'Agree to Terms & Conditions',
-            style: TextStyle(color: Colors.white),
+            '',
+          ),
+          Text(
+            'Please agree to the Terms & Conditions to continue',
+            style:
+                TextStyle(color: Color.fromRGBO(0, 90, 255, 0.9), fontSize: 12),
           )
         ],
       ),

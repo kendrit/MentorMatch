@@ -9,11 +9,11 @@ class HomeSignInWidget extends StatelessWidget {
       children: <Widget>[
         Container(
           padding: EdgeInsets.symmetric(
-            vertical: 12.0,
+            vertical: 20.0,
             horizontal: 20.0,
           ),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color.fromRGBO(60, 60, 60, 1.0),
             borderRadius: BorderRadius.circular(30.0),
           ),
           child: Row(
@@ -21,13 +21,13 @@ class HomeSignInWidget extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.microsoft,
-                color: Colors.blue,
+                color: Color.fromRGBO(54, 125, 255, 1.0),
                 size: 30.0,
               ),
               Text(
                 ' | Sign in with Microsoft',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Color.fromRGBO(54, 125, 255, 1.0),
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),
@@ -39,19 +39,20 @@ class HomeSignInWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(30.0)),
+              color: Color.fromRGBO(60, 60, 60, 1.0),
+              borderRadius: BorderRadius.circular(30.0)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.envelope,
-                color: Colors.blue,
+                color: Color.fromRGBO(54, 125, 255, 1.0),
                 size: 30.0,
               ),
               Text(
                 ' | Sign in with Email',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Color.fromRGBO(54, 125, 255, 1.0),
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),
@@ -63,14 +64,15 @@ class HomeSignInWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(30.0)),
+              color: Color.fromRGBO(60, 60, 60, 1.0),
+              borderRadius: BorderRadius.circular(30.0)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 'Sign Up',
                 style: TextStyle(
-                  color: Colors.red,
+                  color: Color.fromRGBO(54, 125, 255, 1.0),
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),
@@ -82,7 +84,7 @@ class HomeSignInWidget extends StatelessWidget {
         Text(
           'Already Registered? Sign In',
           style: TextStyle(
-            color: Colors.white,
+            color: Color.fromRGBO(54, 125, 255, 1.0),
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
             decoration: TextDecoration.underline,

@@ -1,24 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mentor_match/constants.dart';
-import 'package:mentor_match/home_signin_widget.dart';
-import 'package:mentor_match/create_login.dart';
-import 'package:mentor_match/mentor_match_icons.dart';
-import 'menu_frame.dart';
-import 'login_screen.dart';
+import 'QuizHome.dart';
+// import 'package:mentor_match/home_signin_widget.dart';
+// import 'package:mentor_match/create_login.dart';
+// import 'package:mentor_match/mentor_match_icons.dart';
+// import 'menu_frame.dart';
+// import 'login_screen.dart';
 
 const double space = 20.0;
 
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
+    print(MediaQuery.of(context).size.height);
+    print(MediaQuery.of(context).size.width);
+    print('Hello');
     return Material(
         child: Container(
             child: SafeArea(
                 child: Padding(
                     padding: EdgeInsets.only(
-                        left: 30, right: 30, bottom: 30, top: 50),
+                        left: 30,
+                        right: 30,
+                        bottom: 30 * heightFactor,
+                        top: 50 * heightFactor),
                     child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -35,10 +46,10 @@ class RegisterScreen extends StatelessWidget {
                                   child: Text(
                                     'Register',
                                     style: TextStyle(
-                                        fontSize: 33.0,
-                                        fontWeight: FontWeight.normal,
-                                        color:
-                                            Color.fromRGBO(112, 112, 112, 1.0)),
+                                      fontSize: 33.0 * widthFactor,
+                                      fontWeight: FontWeight.w500,
+                                      color: Constants.darkgray,
+                                    ),
                                   ),
                                 )
                               ]),
@@ -50,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Text('First Name'),
                                   Padding(
-                                      padding: EdgeInsets.only(right: 71),
+                                      padding: EdgeInsets.only(right: 101),
                                       child: Text('Last Name'))
                                 ],
                               ),
@@ -61,8 +72,8 @@ class RegisterScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Stack(children: <Widget>[
                                     Container(
-                                      width: 140.0,
-                                      height: 40.0,
+                                      width: 170.0 * widthFactor,
+                                      height: 45.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -76,14 +87,15 @@ class RegisterScreen extends StatelessWidget {
                                       padding: EdgeInsets.only(
                                           left: 10,
                                           right: 15,
-                                          top: 10,
-                                          bottom: 0),
+                                          top: 12.5 * heightFactor,
+                                          bottom: 0 * heightFactor),
                                       child: Container(
-                                        width: 120.0,
+                                        width: 120.0 * widthFactor,
                                         child: TextFormField(
                                           decoration: InputDecoration.collapsed(
                                             hintText: 'John',
-                                            hintStyle: TextStyle(fontSize: 13),
+                                            hintStyle: TextStyle(
+                                                fontSize: 13 * widthFactor),
                                             floatingLabelBehavior:
                                                 FloatingLabelBehavior.never,
                                             border: InputBorder.none,
@@ -94,8 +106,8 @@ class RegisterScreen extends StatelessWidget {
                                   ]),
                                   Stack(children: <Widget>[
                                     Container(
-                                      width: 140.0,
-                                      height: 40.0,
+                                      width: 170.0 * widthFactor,
+                                      height: 45.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -107,16 +119,17 @@ class RegisterScreen extends StatelessWidget {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 10,
-                                          right: 15,
-                                          top: 10,
-                                          bottom: 0),
+                                          left: 10 * widthFactor,
+                                          right: 15 * widthFactor,
+                                          top: 12.5 * heightFactor,
+                                          bottom: 0 * heightFactor),
                                       child: Container(
-                                        width: 90.0,
+                                        width: 90.0 * widthFactor,
                                         child: TextFormField(
                                           decoration: InputDecoration.collapsed(
                                             hintText: 'Appleseed',
-                                            hintStyle: TextStyle(fontSize: 13),
+                                            hintStyle: TextStyle(
+                                                fontSize: 13 * widthFactor),
                                             floatingLabelBehavior:
                                                 FloatingLabelBehavior.never,
                                             border: InputBorder.none,
@@ -135,15 +148,15 @@ class RegisterScreen extends StatelessWidget {
                                   Text('Email'),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 5 * heightFactor),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Stack(children: <Widget>[
                                       Container(
-                                        width: 300.0,
-                                        height: 50.0,
+                                        width: 351.0 * widthFactor,
+                                        height: 50.0 * heightFactor,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
@@ -155,19 +168,19 @@ class RegisterScreen extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 10,
-                                            right: 15,
-                                            top: 15,
-                                            bottom: 0),
+                                            left: 10 * widthFactor,
+                                            right: 15 * widthFactor,
+                                            top: 15 * heightFactor,
+                                            bottom: 0 * heightFactor),
                                         child: Container(
-                                          width: 240.0,
+                                          width: 326.0 * widthFactor,
                                           child: TextFormField(
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText:
                                                   'johnappleseed@example.com',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 13),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13 * widthFactor),
                                               floatingLabelBehavior:
                                                   FloatingLabelBehavior.never,
                                               border: InputBorder.none,
@@ -185,15 +198,15 @@ class RegisterScreen extends StatelessWidget {
                                   Text('Confirm Email'),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 5 * heightFactor),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Stack(children: <Widget>[
                                       Container(
-                                        width: 300.0,
-                                        height: 50.0,
+                                        width: 351.0 * widthFactor,
+                                        height: 50.0 * heightFactor,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
@@ -205,19 +218,19 @@ class RegisterScreen extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 10,
-                                            right: 15,
-                                            top: 15,
-                                            bottom: 0),
+                                            left: 10 * widthFactor,
+                                            right: 15 * widthFactor,
+                                            top: 15 * heightFactor,
+                                            bottom: 0 * heightFactor),
                                         child: Container(
-                                          width: 240.0,
+                                          width: 326.0 * widthFactor,
                                           child: TextFormField(
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText:
                                                   'johnappleseed@example.com',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 13),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13 * widthFactor),
                                               floatingLabelBehavior:
                                                   FloatingLabelBehavior.never,
                                               border: InputBorder.none,
@@ -235,15 +248,15 @@ class RegisterScreen extends StatelessWidget {
                                   Text('Password'),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 5 * heightFactor),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Stack(children: <Widget>[
                                       Container(
-                                        width: 300.0,
-                                        height: 50.0,
+                                        width: 351.0 * widthFactor,
+                                        height: 50.0 * heightFactor,
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8.0),
@@ -255,18 +268,19 @@ class RegisterScreen extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 10,
-                                            right: 15,
-                                            top: 15,
-                                            bottom: 0),
+                                            left: 10 * widthFactor,
+                                            right: 15 * widthFactor,
+                                            top: 15 * heightFactor,
+                                            bottom: 0 * heightFactor),
                                         child: Container(
-                                          width: 240.0,
+                                          width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            obscureText: true,
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText: '************',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 13),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13 * widthFactor),
                                               floatingLabelBehavior:
                                                   FloatingLabelBehavior.never,
                                               border: InputBorder.none,
@@ -290,32 +304,36 @@ class RegisterScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Stack(children: <Widget>[
-                                      Container(
-                                        width: 300.0,
-                                        height: 50.0,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          color: const Color(0xffffffff),
-                                          border: Border.all(
-                                              width: 1.0,
-                                              color: const Color(0xff707070)),
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 0),
+                                        child: Container(
+                                          width: 351.0 * widthFactor,
+                                          height: 50.0 * heightFactor,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            color: const Color(0xffffffff),
+                                            border: Border.all(
+                                                width: 1.0,
+                                                color: const Color(0xff707070)),
+                                          ),
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            left: 10,
-                                            right: 15,
-                                            top: 15,
-                                            bottom: 0),
+                                            left: 10 * widthFactor,
+                                            right: 15 * widthFactor,
+                                            top: 15 * heightFactor,
+                                            bottom: 0 * heightFactor),
                                         child: Container(
-                                          width: 240.0,
+                                          width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            obscureText: true,
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText: '************',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 13),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 13 * widthFactor),
                                               floatingLabelBehavior:
                                                   FloatingLabelBehavior.never,
                                               border: InputBorder.none,
@@ -327,14 +345,18 @@ class RegisterScreen extends StatelessWidget {
                                   ]),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => QuizHome()),
+                                  );
                                 },
                                 child: Align(
                                   alignment: Alignment.centerRight,
                                   child: Padding(
                                     padding: EdgeInsets.only(
-                                      right: 0,
-                                      top: 25,
+                                      right: 0 * widthFactor,
+                                      top: 25 * heightFactor,
                                     ),
                                     child: Container(
                                       child: Center(
@@ -342,14 +364,14 @@ class RegisterScreen extends StatelessWidget {
                                           'REGISTER',
                                           style: TextStyle(
                                             fontFamily: 'Segoe UI',
-                                            fontSize: 17,
+                                            fontSize: 20 * widthFactor,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
-                                      width: 125.0,
-                                      height: 45.0,
+                                      width: 150.0 * widthFactor,
+                                      height: 60.0 * heightFactor,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(41.0),

@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mentor_match/constants.dart';
-import 'package:mentor_match/home_signin_widget.dart';
-import 'package:mentor_match/create_login.dart';
-import 'package:mentor_match/mentor_match_icons.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 
 class MenuFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return Material(
       child: Container(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+            padding: EdgeInsets.symmetric(
+                vertical: 20.0 * heightFactor, horizontal: 30.0 * widthFactor),
             child: Column(
               children: <Widget>[
                 // Image(
@@ -24,7 +25,7 @@ class MenuFrame extends StatelessWidget {
                 //   height: 115,
                 // ),
                 SizedBox(
-                  height: 30,
+                  height: 30 * heightFactor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -32,7 +33,7 @@ class MenuFrame extends StatelessWidget {
                     Text(
                       'Welcome to\nMentor Match',
                       style: TextStyle(
-                          fontSize: 33.0,
+                          fontSize: 33.0 * widthFactor,
                           fontWeight: FontWeight.normal,
                           color: Color.fromRGBO(112, 112, 112, 1.0)),
                     ),
@@ -47,7 +48,7 @@ class MenuFrame extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40.0,
+                  height: 40.0 * heightFactor,
                 ),
                 Column(
                   children: <Widget>[
@@ -56,7 +57,8 @@ class MenuFrame extends StatelessWidget {
                         children: <Widget>[
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 20),
+                                horizontal: 40 * widthFactor,
+                                vertical: 20 * heightFactor),
                           ),
                           InkWell(
                             //behavior: HitTestBehavior.translucent,
@@ -74,14 +76,14 @@ class MenuFrame extends StatelessWidget {
                                   'LOG IN',
                                   style: TextStyle(
                                     fontFamily: 'Segoe UI',
-                                    fontSize: 27,
+                                    fontSize: 27 * widthFactor,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              width: 313.0,
-                              height: 76.0,
+                              width: 330.0 * widthFactor,
+                              height: 80.0 * heightFactor,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(41.0),
                                 color: Constants.mainblue,
@@ -91,7 +93,7 @@ class MenuFrame extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 20.0,
+                            height: 20.0 * heightFactor,
                           ),
                           InkWell(
                             //behavior: HitTestBehavior.translucent,
@@ -109,14 +111,14 @@ class MenuFrame extends StatelessWidget {
                                   'REGISTER',
                                   style: TextStyle(
                                     fontFamily: 'Segoe UI',
-                                    fontSize: 27,
+                                    fontSize: 27 * widthFactor,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                              width: 313.0,
-                              height: 76.0,
+                              width: 330.0 * widthFactor,
+                              height: 80.0 * heightFactor,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(41.0),
                                 color: Constants.maingreen,
@@ -125,15 +127,18 @@ class MenuFrame extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 85),
+                          SizedBox(height: 90 * heightFactor),
                           Image(
-                            image: AssetImage('assets/images/MM_cool.png'),
-                            height: 100,
-                            width: 100,
+                            image: AssetImage(
+                                'assets/images/Decreased_distance.png'),
+                            height: 80 * heightFactor,
+                            width: 80 * widthFactor,
                           ),
+                          SizedBox(height: 10 * heightFactor),
                           Text('Brought to you by Wilbur Wright College',
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.grey)),
+                              style: TextStyle(
+                                  fontSize: 12 * widthFactor,
+                                  color: Colors.grey)),
                         ])
                   ],
                 )
