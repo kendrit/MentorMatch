@@ -9,8 +9,6 @@ import 'QuizHome.dart';
 // import 'menu_frame.dart';
 // import 'login_screen.dart';
 
-const double space = 20.0;
-
 class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,6 +16,7 @@ class RegisterScreen extends StatelessWidget {
         (MediaQuery.of(context).size.height / 683.4285714285714);
     double widthFactor =
         (MediaQuery.of(context).size.width / 411.42857142857144);
+    double space = 20.0 * heightFactor;
     print(MediaQuery.of(context).size.height);
     print(MediaQuery.of(context).size.width);
     print('Hello');
@@ -26,10 +25,10 @@ class RegisterScreen extends StatelessWidget {
             child: SafeArea(
                 child: Padding(
                     padding: EdgeInsets.only(
-                        left: 30,
-                        right: 30,
+                        left: 30 * widthFactor,
+                        right: 30 * widthFactor,
                         bottom: 30 * heightFactor,
-                        top: 50 * heightFactor),
+                        top: 35 * heightFactor),
                     child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
@@ -61,11 +60,12 @@ class RegisterScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Text('First Name'),
                                   Padding(
-                                      padding: EdgeInsets.only(right: 101),
+                                      padding: EdgeInsets.only(
+                                          right: 70 * widthFactor),
                                       child: Text('Last Name'))
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 5 * heightFactor),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -85,8 +85,8 @@ class RegisterScreen extends StatelessWidget {
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          left: 10,
-                                          right: 15,
+                                          left: 10 * widthFactor,
+                                          right: 15 * widthFactor,
                                           top: 12.5 * heightFactor,
                                           bottom: 0 * heightFactor),
                                       child: Container(
@@ -298,7 +298,7 @@ class RegisterScreen extends StatelessWidget {
                                   Text('Confirm Password'),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 5 * heightFactor),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -356,7 +356,7 @@ class RegisterScreen extends StatelessWidget {
                                   child: Padding(
                                     padding: EdgeInsets.only(
                                       right: 0 * widthFactor,
-                                      top: 25 * heightFactor,
+                                      top: space,
                                     ),
                                     child: Container(
                                       child: Center(

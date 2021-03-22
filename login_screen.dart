@@ -220,7 +220,7 @@ class LoginScreen extends StatelessWidget {
                                         EdgeInsets.only(left: 0 * widthFactor),
                                     child: Container(
                                       width: 70.0 * widthFactor,
-                                      height: 70.0 * heightFactor,
+                                      height: 70.0 * widthFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),
@@ -240,7 +240,7 @@ class LoginScreen extends StatelessWidget {
                                         EdgeInsets.only(left: 10 * widthFactor),
                                     child: Container(
                                       width: 70.0 * widthFactor,
-                                      height: 70.0 * heightFactor,
+                                      height: 70.0 * widthFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),
@@ -260,7 +260,7 @@ class LoginScreen extends StatelessWidget {
                                         EdgeInsets.only(left: 10 * widthFactor),
                                     child: Container(
                                       width: 70.0 * widthFactor,
-                                      height: 70.0 * heightFactor,
+                                      height: 70.0 * widthFactor,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.elliptical(9999.0, 9999.0)),

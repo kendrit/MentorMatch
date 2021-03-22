@@ -34,7 +34,7 @@ class MenuFrame extends StatelessWidget {
                       'Welcome to\nMentor Match',
                       style: TextStyle(
                           fontSize: 33.0 * widthFactor,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(112, 112, 112, 1.0)),
                     ),
                     //Text(
