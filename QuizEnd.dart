@@ -4,8 +4,9 @@ import 'package:mentor_match/constants.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'quiz_page1.dart';
+import 'HomeScreen.dart';
 
-class QuizHome extends StatelessWidget {
+class QuizEnd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double heightFactor =
@@ -27,7 +28,7 @@ class QuizHome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'One more step...',
+                      'Thank you for registering\nfor Mentor Match!',
                       style: TextStyle(
                         fontFamily: 'Segoe UI',
                         fontSize: 26 * widthFactor,
@@ -53,7 +54,7 @@ class QuizHome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'To complete the creation of your account,\nwe will have you answer a series of \nquestions that will help us calibrate\nyour experience.\n\nPlease be as honest as possible to ensure \nan accurate match.',
+                      'Your answers have been recorded \nand your account is complete. You can \ncustomize your account further in your \naccount settings.',
                       style: TextStyle(
                         fontFamily: 'Segoe UI',
                         fontSize: 16 * widthFactor,
@@ -70,33 +71,32 @@ class QuizHome extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CustomRadio()),
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
                     );
                   },
                   child: Align(
-                    alignment: Alignment.bottomCenter,
+                    alignment: Alignment.centerRight,
                     child: Padding(
                       padding: EdgeInsets.only(
                         right: 0 * widthFactor,
-                        top: 300 * heightFactor,
+                        top: 320 * heightFactor,
                       ),
                       child: Container(
                         child: Center(
                           child: Text(
-                            'BEGIN SURVEY',
+                            'GET STARTED',
                             style: TextStyle(
                               fontFamily: 'Segoe UI',
-                              fontSize: 27 * widthFactor,
+                              fontSize: 23 * widthFactor,
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        width: 300.0 * widthFactor,
-                        height: 70.0 * heightFactor,
+                        width: 200.0 * widthFactor,
+                        height: 65.0 * heightFactor,
                         decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(41.0 * widthFactor),
+                          borderRadius: BorderRadius.circular(41.0),
                           color: Constants.maingreen,
                           border: Border.all(
                               width: 1.0, color: const Color(0xffffffff)),

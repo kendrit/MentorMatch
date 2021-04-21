@@ -1,13 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mentor_match/constants.dart';
-import 'QuizHome.dart';
-// import 'package:mentor_match/home_signin_widget.dart';
-// import 'package:mentor_match/create_login.dart';
-// import 'package:mentor_match/mentor_match_icons.dart';
-// import 'menu_frame.dart';
-// import 'login_screen.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_core/firebase_core.dart';
+import 'package:mentor_match/QuizHome.dart';
+
+//final FirebaseAuth _auth = FirebaseAuth.instance;
+String email;
+String emailConfirm;
+String password;
+String passwordConfirm;
+bool saveAttempted = false;
+final formKey = GlobalKey<FormState>();
+
+/*
+void _createUser(String mail, String pw) {
+  _auth
+      .createUserWithEmailAndPassword(email: mail, password: pw)
+      .then((authResult) {
+    print('yay! ${authResult.user}');
+  }).catchError((err) {
+    print(err);
+  });
+} */
 
 class RegisterScreen extends StatelessWidget {
   @override
@@ -17,26 +32,18 @@ class RegisterScreen extends StatelessWidget {
     double widthFactor =
         (MediaQuery.of(context).size.width / 411.42857142857144);
     double space = 20.0 * heightFactor;
-    print(MediaQuery.of(context).size.height);
-    print(MediaQuery.of(context).size.width);
-    print('Hello');
-    return Material(
-        child: Container(
-            child: SafeArea(
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 30 * widthFactor,
-                        right: 30 * widthFactor,
-                        bottom: 30 * heightFactor,
-                        top: 35 * heightFactor),
-                    child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          // Image(
-                          //   image: AssetImage('assets/images/MM_LogoRect.png'),
-                          //   width: 135,
-                          //   height: 115,
-                          // ),
+    return Form(
+        key: formKey,
+        child: Material(
+            child: Container(
+                child: SafeArea(
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 30 * widthFactor,
+                            right: 30 * widthFactor,
+                            bottom: 5 * heightFactor,
+                            top: 5 * heightFactor),
+                        child: Column(children: <Widget>[
                           Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
@@ -145,7 +152,7 @@ class RegisterScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('Email'),
+                                  Text('Email (School or Work)'),
                                 ],
                               ),
                               SizedBox(height: 5 * heightFactor),
@@ -175,6 +182,29 @@ class RegisterScreen extends StatelessWidget {
                                         child: Container(
                                           width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            autovalidate: saveAttempted,
+                                            onChanged: (textValue) {
+                                              email = textValue;
+                                            },
+                                            validator: (emailValue) {
+                                              if (emailValue.isEmpty) {
+                                                return '\nThis field is mandatory';
+                                              }
+                                              String p = "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}" +
+                                                  "\\@" +
+                                                  "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                                                  "(" +
+                                                  "\\." +
+                                                  "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                                                  ")+";
+                                              RegExp regExp = new RegExp(p);
+
+                                              if (regExp.hasMatch(emailValue)) {
+                                                // So, the email is valid
+                                                return null;
+                                              }
+                                              return '\nThis is not a valid email';
+                                            },
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText:
@@ -225,6 +255,16 @@ class RegisterScreen extends StatelessWidget {
                                         child: Container(
                                           width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            autovalidate: saveAttempted,
+                                            onChanged: (textValue) {
+                                              emailConfirm = textValue;
+                                            },
+                                            validator: (emailConfValue) {
+                                              if (emailConfValue != email) {
+                                                return '\nEmail addresses must match';
+                                              }
+                                              return null;
+                                            },
                                             decoration:
                                                 InputDecoration.collapsed(
                                               hintText:
@@ -275,6 +315,19 @@ class RegisterScreen extends StatelessWidget {
                                         child: Container(
                                           width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            autovalidate: saveAttempted,
+                                            onChanged: (textValue) {
+                                              password = textValue;
+                                            },
+                                            validator: (passwordValue) {
+                                              if (passwordValue.isEmpty) {
+                                                return '\nThis field is mandatory';
+                                              }
+                                              if (passwordValue.length < 8) {
+                                                return '\nPassword must be at least 8 characters';
+                                              }
+                                              return null;
+                                            },
                                             obscureText: true,
                                             decoration:
                                                 InputDecoration.collapsed(
@@ -328,6 +381,17 @@ class RegisterScreen extends StatelessWidget {
                                         child: Container(
                                           width: 326.0 * widthFactor,
                                           child: TextFormField(
+                                            autovalidate: saveAttempted,
+                                            onChanged: (textValue) {
+                                              passwordConfirm = textValue;
+                                            },
+                                            validator: (passwordConfValue) {
+                                              if (passwordConfValue !=
+                                                  password) {
+                                                return '\nPasswords must match';
+                                              }
+                                              return null;
+                                            },
                                             obscureText: true,
                                             decoration:
                                                 InputDecoration.collapsed(
@@ -343,13 +407,15 @@ class RegisterScreen extends StatelessWidget {
                                       )
                                     ]),
                                   ]),
-                              GestureDetector(
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => QuizHome()),
-                                  );
+                                  saveAttempted = true;
+                                  if (formKey.currentState.validate()) {
+                                    formKey.currentState.save();
+                                    //_createUser(email, password);
+                                  }
                                 },
                                 child: Align(
                                   alignment: Alignment.centerRight,
@@ -364,7 +430,7 @@ class RegisterScreen extends StatelessWidget {
                                           'REGISTER',
                                           style: TextStyle(
                                             fontFamily: 'Segoe UI',
-                                            fontSize: 20 * widthFactor,
+                                            fontSize: 22 * widthFactor,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -386,6 +452,6 @@ class RegisterScreen extends StatelessWidget {
                               ),
                             ],
                           )
-                        ])))));
+                        ]))))));
   }
 }
