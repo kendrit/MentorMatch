@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:mentor_match/constants.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'quiz_page1.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -19,6 +22,16 @@ Future<void> _addUser(
     'status': status,
     'institution': institution
   }).catchError((error) => print('$error'));
+}
+
+File _imageFile;
+final ImagePicker _picker = ImagePicker();
+void takePhoto(ImageSource source) async {
+  final pickedphoto =
+      await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50)
+          .then((image) {
+    _imageFile = image;
+  });
 }
 
 class QuizHome extends StatefulWidget {
@@ -114,6 +127,26 @@ class QuizHomeState extends State<QuizHome> {
                   ],
                 ),
                 SizedBox(height: 20 * heightFactor),
+                GestureDetector(
+                  child: Container(
+                    height: 125,
+                    width: 125,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: _imageFile == null
+                              ? AssetImage("assets/images/doris.jpg")
+                              : FileImage(File(_imageFile.path)),
+                          fit: BoxFit.cover,
+                        ),
+                        border: Border.all(
+                          color: Constants.darkgray,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(100))),
+                  ),
+                  onTap: () {
+                    takePhoto(ImageSource.gallery);
+                  },
+                ),
                 Row(
                   children: <Widget>[
                     Column(

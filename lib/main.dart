@@ -34,10 +34,15 @@ class MyApp extends StatelessWidget {
         // Check for errors
         if (snapshot.hasError) {
           print('error');
-          return Container(
-              child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Constants.mainblue),
-          ));
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'MentorMatch',
+            theme: ThemeData(
+              primaryColor: Colors.white,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: MenuFrame(),
+          );
         }
 
         // Once complete, show your application
