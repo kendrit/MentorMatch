@@ -217,6 +217,7 @@ class RegisterScreen extends StatelessWidget {
                                             onChanged: (textValue) {
                                               email = textValue;
                                             },
+                                            //initialValue: 'test@gmail.com',
                                             validator: (emailValue) {
                                               if (emailValue.isEmpty) {
                                                 return '\nThis field is mandatory';

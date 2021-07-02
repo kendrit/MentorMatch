@@ -9,11 +9,13 @@ import 'register_screen.dart';
 import 'quiz_page1.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 final FirebaseAuth auth = FirebaseAuth.instance;
-
-Future<void> _addUser(
-    String firstname, String lastname, String status, String institution) {
+firebase_storage.FirebaseStorage storage =
+    firebase_storage.FirebaseStorage.instance;
+Future<void> _addUser(String firstname, String lastname, String status,
+    String institution) async {
   String fullname = '$firstname $lastname';
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   users.doc(auth.currentUser.uid).set({
@@ -24,15 +26,14 @@ Future<void> _addUser(
   }).catchError((error) => print('$error'));
 }
 
+getAvi() async {
+  return await firebase_storage.FirebaseStorage.instance
+      .ref('images/' + auth.currentUser.uid)
+      .getDownloadURL();
+}
+
 File _imageFile;
 final ImagePicker _picker = ImagePicker();
-void takePhoto(ImageSource source) async {
-  final pickedphoto =
-      await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50)
-          .then((image) {
-    _imageFile = image;
-  });
-}
 
 class QuizHome extends StatefulWidget {
   QuizHome({Key key, @required this.email, @required this.fullname})
@@ -47,7 +48,7 @@ class QuizHome extends StatefulWidget {
 class QuizHomeState extends State<QuizHome> {
   String statusChoice;
   String institutionChoice;
-  List statusChoices = ['Mentor', 'Mentee', "I don't know"];
+  List statusChoices = ['Mentor', 'Mentee', "Both"];
   List institutionChoices = ['Wilbur Wright College'];
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,30 @@ class QuizHomeState extends State<QuizHome> {
         (MediaQuery.of(context).size.height / 683.4285714285714);
     double widthFactor =
         (MediaQuery.of(context).size.width / 411.42857142857144);
+    void takePhoto(ImageSource source) async {
+      final pickedphoto = await ImagePicker.pickImage(
+          source: ImageSource.gallery, imageQuality: 50);
+      //       .then((image) {
+      // _imageFile = image;
+      // print(image);
+      setState(() {
+        _imageFile = pickedphoto;
+      });
+      if (pickedphoto != null) {
+        //Upload to Firebase
+        var snapshot = await storage
+            .ref()
+            .child('images/' + auth.currentUser.uid)
+            .putFile(_imageFile);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+      } else {
+        var snapshot = await storage
+            .ref()
+            .child('images/' + auth.currentUser.uid)
+            .putFile(File('assets/images/profile.png'));
+      }
+    }
+
     return Material(
       child: Container(
         child: SafeArea(
@@ -127,26 +152,6 @@ class QuizHomeState extends State<QuizHome> {
                   ],
                 ),
                 SizedBox(height: 20 * heightFactor),
-                GestureDetector(
-                  child: Container(
-                    height: 125,
-                    width: 125,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: _imageFile == null
-                              ? AssetImage("assets/images/doris.jpg")
-                              : FileImage(File(_imageFile.path)),
-                          fit: BoxFit.cover,
-                        ),
-                        border: Border.all(
-                          color: Constants.darkgray,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(100))),
-                  ),
-                  onTap: () {
-                    takePhoto(ImageSource.gallery);
-                  },
-                ),
                 Row(
                   children: <Widget>[
                     Column(
@@ -206,6 +211,19 @@ class QuizHomeState extends State<QuizHome> {
                     // ),
                   ],
                 ),
+                SizedBox(
+                  height: 15 * heightFactor,
+                ),
+                GestureDetector(
+                  child: profilePicture(context),
+                  onTap: () {
+                    takePhoto(ImageSource.gallery);
+                  },
+                ),
+                SizedBox(
+                  height: 15 * heightFactor,
+                ),
+                Center(child: Text('Choose a Profile Picture')),
                 GestureDetector(
                   onTap: () {
                     try {
@@ -223,7 +241,7 @@ class QuizHomeState extends State<QuizHome> {
                     child: Padding(
                       padding: EdgeInsets.only(
                         right: 0 * widthFactor,
-                        top: 200 * heightFactor,
+                        top: 50 * heightFactor,
                       ),
                       child: Container(
                         child: Center(
@@ -277,37 +295,17 @@ class QuizHomeState extends State<QuizHome> {
   }
 }
 
-class RadioItem extends StatelessWidget {
-  final RadioModel _item;
-  RadioItem(this._item);
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-      alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.only(right: 22 * 1.0000000),
-      child: new Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          new Container(
-            margin: new EdgeInsets.only(bottom: 5.0 * 1.000),
-            child: new Text(_item.text,
-                style: TextStyle(
-                    fontSize: 11 * 1.0000000, color: const Color(0xff707070))),
-          ),
-          new Container(
-            height: 40.0 * 1.000,
-            width: 40.0 * 1.0000000,
-            decoration: new BoxDecoration(
-              color: _item.isSelected ? Constants.mainblue : Colors.transparent,
-              border: new Border.all(
-                  width: 1.0,
-                  color: _item.isSelected ? Constants.mainblue : Colors.grey),
-              borderRadius:
-                  const BorderRadius.all(const Radius.circular(9999.0)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+Widget profilePicture(context) {
+  double heightFactor =
+      (MediaQuery.of(context).size.height / 683.4285714285714);
+  double widthFactor = (MediaQuery.of(context).size.width / 411.42857142857144);
+  return FutureBuilder(
+      future: getAvi(),
+      builder: (context, snapshot) {
+        return CircleAvatar(
+            radius: 50 * widthFactor,
+            backgroundImage: _imageFile == null
+                ? AssetImage('assets/images/profile.png')
+                : FileImage(File(_imageFile.path)));
+      });
 }

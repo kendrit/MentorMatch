@@ -135,7 +135,7 @@ class MenuFrame extends StatelessWidget {
                             width: 80 * widthFactor,
                           ),
                           SizedBox(height: 10 * heightFactor),
-                          Text('Brought to you by Wilbur Wright College',
+                          Text('Brought to you by Wright COE and the NSF',
                               style: TextStyle(
                                   fontSize: 12 * widthFactor,
                                   color: Colors.grey)),

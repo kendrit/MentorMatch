@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mentor_match/constants.dart';
@@ -13,6 +15,14 @@ class CustomRadio extends StatefulWidget {
   }
 }
 
+Future<void> _addUser(String label, String value) async {
+  String fullname = '$firstname $lastname';
+  CollectionReference userdata =
+      FirebaseFirestore.instance.collection('userdata');
+  userdata.doc(auth.currentUser.uid).update({label: value}).catchError(
+      (error) => userdata.doc(auth.currentUser.uid).set({label: value}));
+}
+
 class CustomRadioState extends State<CustomRadio> {
   List<RadioModel> questiondata1 = new List<RadioModel>();
   List<RadioModel> questiondata2 = new List<RadioModel>();
@@ -23,39 +33,51 @@ class CustomRadioState extends State<CustomRadio> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    questiondata1.add(new RadioModel(false, 'Very Unlikely'));
-    questiondata1.add(new RadioModel(false, 'Unlikely'));
-    questiondata1.add(new RadioModel(false, 'Not Sure'));
-    questiondata1.add(new RadioModel(false, 'Likely'));
-    questiondata1.add(new RadioModel(false, 'Very Likely'));
-    questiondata2.add(new RadioModel(false, '0-1'));
-    questiondata2.add(new RadioModel(false, '2'));
-    questiondata2.add(new RadioModel(false, '3'));
-    questiondata2.add(new RadioModel(false, '4'));
-    questiondata2.add(new RadioModel(false, '5+'));
-    questiondata3.add(new RadioModel(false, 'Choice 1'));
-    questiondata3.add(new RadioModel(false, 'Choice 2'));
-    questiondata3.add(new RadioModel(false, 'Choice 3'));
-    questiondata3.add(new RadioModel(false, 'Choice 4'));
-    question.add(new QuestionList('How likely are you to', ' be a leader?'));
-    question.add(new QuestionList('How many STEM courses', ' have you taken?'));
-    question.add(new QuestionList('What is your', ' planned major?'));
+    questiondata1.add(new RadioModel(false, 'Very Unlikely', "1"));
+    questiondata1.add(new RadioModel(false, 'Unlikely', "2"));
+    questiondata1.add(new RadioModel(false, 'Not Sure', "3"));
+    questiondata1.add(new RadioModel(false, 'Likely', "4"));
+    questiondata1.add(new RadioModel(false, 'Very Likely', "5"));
+    questiondata2.add(new RadioModel(false, '0-1', "1"));
+    questiondata2.add(new RadioModel(false, '2', "2"));
+    questiondata2.add(new RadioModel(false, '3', "3"));
+    questiondata2.add(new RadioModel(false, '4', "4"));
+    questiondata2.add(new RadioModel(false, '5+', "5"));
+    questiondata3.add(new RadioModel(false, 'Aerospace Engineering', 'AERO'));
+    questiondata3.add(new RadioModel(false, 'Bioengineering', 'BIO'));
+    questiondata3.add(new RadioModel(false, 'Civil Engineering', 'CIVIL'));
+    questiondata3.add(new RadioModel(false, 'Computer Engineering', 'CE'));
+    questiondata3.add(new RadioModel(false, 'Computer Science', 'CS'));
+    questiondata3.add(new RadioModel(false, 'Electrical Engineering', 'EE'));
+    questiondata3.add(new RadioModel(false, 'Engineering Mechanics', 'EM'));
+    questiondata3.add(new RadioModel(false, 'Physics', 'PHYS'));
+    questiondata3.add(new RadioModel(false, 'Industrial Engineering', 'IE'));
+    questiondata3.add(new RadioModel(false, 'Mechanical Engineering', 'ME'));
+    questiondata3
+        .add(new RadioModel(false, 'Systems Engineering and Design', 'SYS'));
+    question.add(
+        new QuestionList('How likely are you to', ' be a leader?', 'leader'));
+    question.add(new QuestionList(
+        'How many STEM courses', ' have you taken?', 'stemtaken'));
+    question.add(new QuestionList('What is your', ' planned major?', 'major'));
   }
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.height);
-    print(MediaQuery.of(context).size.width);
-    //double 1.000 = (MediaQuery.of(context).size.height / 692.0); // height factor
-    //double 1.0000000 = (MediaQuery.of(context).size.width / 360.0); // width factor
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
+    //double heightFactor = (MediaQuery.of(context).size.height / 692.0); // height factor
+    //double widthFactor = (MediaQuery.of(context).size.width / 360.0); // width factor
     return Material(
       child: Container(
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(
-              left: 15 * 1.0000000,
-              right: 15 * 1.0000000,
-              top: 25 * 1.000,
+              left: 15 * widthFactor,
+              right: 15 * widthFactor,
+              top: 25 * heightFactor,
             ),
             child: Column(
               children: <Widget>[
@@ -66,7 +88,7 @@ class CustomRadioState extends State<CustomRadio> {
                       'Personality Questions',
                       style: TextStyle(
                         fontFamily: 'Segoe UI',
-                        fontSize: 28 * 1.0000000,
+                        fontSize: 28 * widthFactor,
                         color: const Color(0xff707070),
                         fontWeight: FontWeight.w600,
                       ),
@@ -84,7 +106,7 @@ class CustomRadioState extends State<CustomRadio> {
                   ],
                 ),
                 SizedBox(
-                  height: 10.0 * 1.000,
+                  height: 10.0 * heightFactor,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -93,21 +115,21 @@ class CustomRadioState extends State<CustomRadio> {
                       'Help us find the perfect match for you!',
                       style: TextStyle(
                         fontFamily: 'Segoe UI',
-                        fontSize: 14 * 1.0000000,
+                        fontSize: 14 * widthFactor,
                         color: const Color(0xff707070),
                         fontStyle: FontStyle.italic,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0 * 1.000),
+                SizedBox(height: 20.0 * heightFactor),
                 Center(
                     child: Column(
                   children: <Widget>[
                     new Question(question[0]),
-                    SizedBox(height: 10 * 1.000),
+                    SizedBox(height: 10 * heightFactor),
                     Container(
-                      height: 100 * 1.000,
+                      height: 100 * heightFactor,
                       child: new ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: questiondata1.length,
@@ -125,6 +147,8 @@ class CustomRadioState extends State<CustomRadio> {
                                           false); //sets all buttons, including itself, to "false"
                                       questiondata1[index].isSelected =
                                           true; //sets itself to "true"
+                                      _addUser(question[0].value,
+                                          questiondata1[index].value);
                                       print(questiondata1);
                                     });
                                   },
@@ -137,9 +161,9 @@ class CustomRadioState extends State<CustomRadio> {
                       ),
                     ),
                     new Question(question[1]),
-                    SizedBox(height: 10 * 1.000),
+                    SizedBox(height: 10 * heightFactor),
                     Container(
-                      height: 100 * 1.000,
+                      height: 100 * heightFactor,
                       child: new ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: questiondata2.length,
@@ -157,6 +181,8 @@ class CustomRadioState extends State<CustomRadio> {
                                           false); //sets all buttons, including itself, to "false"
                                       questiondata2[index].isSelected =
                                           true; //sets itself to "true"
+                                      _addUser(question[1].value,
+                                          questiondata2[index].value);
                                     });
                                   },
                                   child: new RadioItem2(questiondata2[index]),
@@ -168,9 +194,9 @@ class CustomRadioState extends State<CustomRadio> {
                       ),
                     ),
                     new Question(question[2]),
-                    SizedBox(height: 10 * 1.000),
+                    SizedBox(height: 10 * heightFactor),
                     Container(
-                      height: 190 * 1.000,
+                      height: 190 * heightFactor,
                       child: new ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: questiondata3.length,
@@ -189,6 +215,8 @@ class CustomRadioState extends State<CustomRadio> {
                                       questiondata3[index].isSelected =
                                           true; //sets itself to "true"
                                     });
+                                    _addUser(question[2].value,
+                                        questiondata3[index].value);
                                   },
                                   child: new RadioItem3(questiondata3[index]),
                                 ),
@@ -211,8 +239,8 @@ class CustomRadioState extends State<CustomRadio> {
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: EdgeInsets.only(
-                        right: 0 * 1.0000000,
-                        top: 0 * 1.000,
+                        right: 0 * widthFactor,
+                        top: 0 * heightFactor,
                       ),
                       child: Container(
                         child: Center(
@@ -220,16 +248,17 @@ class CustomRadioState extends State<CustomRadio> {
                             'NEXT',
                             style: TextStyle(
                               fontFamily: 'Segoe UI',
-                              fontSize: 24 * 1.0000000,
+                              fontSize: 24 * widthFactor,
                               color: const Color(0xff707070),
                             ),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        width: 140.0 * 1.0000000,
-                        height: 50.0 * 1.000,
+                        width: 140.0 * widthFactor,
+                        height: 50.0 * heightFactor,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(41.0 * 1.0000000),
+                          borderRadius:
+                              BorderRadius.circular(41.0 * widthFactor),
                           color: Colors.transparent,
                           border: Border.all(
                               width: 1.0, color: const Color(0xff707070)),
@@ -255,21 +284,26 @@ class RadioItem extends StatelessWidget {
   RadioItem(this._item);
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return new Container(
       alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.only(right: 22 * 1.0000000),
+      margin: new EdgeInsets.only(right: 22 * widthFactor),
       child: new Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           new Container(
-            margin: new EdgeInsets.only(bottom: 5.0 * 1.000),
+            margin: new EdgeInsets.only(bottom: 5.0 * heightFactor),
             child: new Text(_item.text,
                 style: TextStyle(
-                    fontSize: 11 * 1.0000000, color: const Color(0xff707070))),
+                    fontSize: 11 * widthFactor,
+                    color: const Color(0xff707070))),
           ),
           new Container(
-            height: 40.0 * 1.000,
-            width: 40.0 * 1.0000000,
+            height: 40.0 * heightFactor,
+            width: 40.0 * widthFactor,
             decoration: new BoxDecoration(
               color: _item.isSelected ? Constants.mainblue : Colors.transparent,
               border: new Border.all(
@@ -291,21 +325,26 @@ class RadioItem2 extends StatelessWidget {
   RadioItem2(this._item);
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return new Container(
       alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.only(right: 30 * 1.0000000),
+      margin: new EdgeInsets.only(right: 30 * widthFactor),
       child: new Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           new Container(
-            margin: new EdgeInsets.only(bottom: 5.0 * 1.000),
+            margin: new EdgeInsets.only(bottom: 5.0 * heightFactor),
             child: new Text(_item.text,
                 style: TextStyle(
-                    fontSize: 11 * 1.0000000, color: const Color(0xff707070))),
+                    fontSize: 11 * widthFactor,
+                    color: const Color(0xff707070))),
           ),
           new Container(
-            height: 40.0 * 1.0000000,
-            width: 40.0 * 1.0000000,
+            height: 40.0 * widthFactor,
+            width: 40.0 * widthFactor,
             decoration: new BoxDecoration(
               color: _item.isSelected ? Constants.mainblue : Colors.transparent,
               border: new Border.all(
@@ -327,15 +366,20 @@ class RadioItem3 extends StatelessWidget {
   RadioItem3(this._item);
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return new Container(
       alignment: Alignment.centerLeft,
-      margin: new EdgeInsets.only(right: 30 * 1.0000000, bottom: 20 * 1.000),
+      margin: new EdgeInsets.only(
+          right: 30 * widthFactor, bottom: 20 * heightFactor),
       child: new Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           new Container(
-            height: 30.0 * 1.0000000,
-            width: 30.0 * 1.0000000,
+            height: 30.0 * widthFactor,
+            width: 30.0 * widthFactor,
             decoration: new BoxDecoration(
               color: _item.isSelected ? Constants.mainblue : Colors.transparent,
               border: new Border.all(
@@ -346,10 +390,11 @@ class RadioItem3 extends StatelessWidget {
             ),
           ),
           new Container(
-            margin: new EdgeInsets.only(left: 10 * 1.0000000),
+            margin: new EdgeInsets.only(left: 10 * widthFactor),
             child: new Text(_item.text,
                 style: TextStyle(
-                    fontSize: 11 * 1.0000000, color: const Color(0xff707070))),
+                    fontSize: 11 * widthFactor,
+                    color: const Color(0xff707070))),
           ),
         ],
       ),
@@ -362,6 +407,10 @@ class Question extends StatelessWidget {
   Question(this._question);
   @override
   Widget build(BuildContext context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return new Column(
       children: <Widget>[
         Container(
@@ -370,7 +419,7 @@ class Question extends StatelessWidget {
             new TextSpan(
               style: TextStyle(
                 fontFamily: 'Segoe UI',
-                fontSize: 17 * 1.0000000,
+                fontSize: 17 * widthFactor,
                 color: const Color(0xff707070),
               ),
               children: [
@@ -396,13 +445,14 @@ class Question extends StatelessWidget {
 class RadioModel {
   bool isSelected;
   final String text;
+  final value;
 
-  RadioModel(this.isSelected, this.text);
+  RadioModel(this.isSelected, this.text, this.value);
 }
 
 class QuestionList {
   final String prefix;
   final String subject;
-
-  QuestionList(this.prefix, this.subject);
+  final String value;
+  QuestionList(this.prefix, this.subject, this.value);
 }

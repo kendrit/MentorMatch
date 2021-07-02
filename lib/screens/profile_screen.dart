@@ -110,21 +110,22 @@ class EditProfileState extends State<EditProfile> {
                   child: Column(
                     children: [
                       GestureDetector(
-                        child: profilePicture(),
+                        child: profilePicture(context),
                         onTap: () {
                           takePhoto(ImageSource.gallery);
                         },
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 10 * heightFactor,
                       ),
                       Text(
                         'Change your Profile Picture',
-                        style:
-                            TextStyle(fontSize: 14, color: Constants.darkgray),
+                        style: TextStyle(
+                            fontSize: 14 * widthFactor,
+                            color: Constants.darkgray),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 20 * heightFactor,
                       ),
                     ],
                   ),
@@ -282,15 +283,27 @@ class EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget profilePicture() {
+  Widget profilePicture(context) {
+    double heightFactor =
+        (MediaQuery.of(context).size.height / 683.4285714285714);
+    double widthFactor =
+        (MediaQuery.of(context).size.width / 411.42857142857144);
     return FutureBuilder(
         future: getAvi(),
         builder: (context, snapshot) {
           return CircleAvatar(
-              radius: 75,
-              backgroundImage: _imageFile == null
-                  ? NetworkImage(snapshot.data)
-                  : FileImage(File(_imageFile.path)));
+            radius: 75 * widthFactor,
+            backgroundImage:
+                _imageFile == null ? NetworkImage(snapshot.data) : _imageFile,
+          );
         });
+  }
+
+  pfpGet(String data) {
+    if (data != null) {
+      return NetworkImage(data);
+    } else {
+      return AssetImage('assets/images/profile.png');
+    }
   }
 }

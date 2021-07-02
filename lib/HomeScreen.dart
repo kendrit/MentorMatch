@@ -7,6 +7,10 @@ import 'package:mentor_match/constants.dart';
 import 'package:mentor_match/menu_frame.dart';
 import 'package:mentor_match/screens/chat_screen.dart';
 import 'package:mentor_match/screens/home_screen.dart';
+import 'package:mentor_match/screens/mentor_screen.dart';
+import 'package:mentor_match/screens/search_screen.dart';
+import 'package:mentor_match/screens/settings_screen.dart';
+import 'package:mentor_match/screens/splash_screen.dart';
 import 'login_screen.dart';
 import 'screens/profile_screen.dart';
 import 'register_screen.dart';
@@ -42,9 +46,9 @@ getAvi() async {
 class HomeScreen extends StatelessWidget {
   final UserCredential user;
   HomeScreen({Key key, this.user}) : super(key: key);
+  Future userCheck = checkUser();
   @override
   Widget build(BuildContext context) {
-    Future userCheck = checkUser();
     double heightFactor = (MediaQuery.of(context).size.height / 692);
     double widthFactor = (MediaQuery.of(context).size.width / 360);
     return FutureBuilder(
@@ -55,10 +59,8 @@ class HomeScreen extends StatelessWidget {
         // Check for errors
         if (snapshot.hasError) {
           print('error');
-          return Container(
-              child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Constants.mainblue),
-          ));
+          auth.signOut();
+          return MenuFrame();
         }
 
         // Once complete, show your application
@@ -70,8 +72,14 @@ class HomeScreen extends StatelessWidget {
               return MenteeScreen(
                   heightFactor: heightFactor, widthFactor: widthFactor);
             }
+
             if (snapshot.data[2] == 'Mentor') {
               return MentorScreen(
+                  heightFactor: heightFactor, widthFactor: widthFactor);
+            }
+
+            if (snapshot.data[2] == 'Both') {
+              return BothScreen(
                   heightFactor: heightFactor, widthFactor: widthFactor);
             }
           } else {
@@ -90,15 +98,7 @@ class HomeScreen extends StatelessWidget {
 
         // Otherwise, show something whilst waiting for initialization to complete
         print('waitingg...');
-        return MaterialApp(
-            home: new Scaffold(
-                backgroundColor: Colors.white,
-                body: Container(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Constants.mainblue),
-                  ),
-                )));
+        return SplashScreen();
       },
     );
   }
@@ -148,8 +148,8 @@ class MenteeScreen extends StatelessWidget {
                                   imageUrl: snapshot.data,
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
-                                    width: 150.0,
-                                    height: 150.0,
+                                    width: 150.0 * widthFactor,
+                                    height: 150.0 * heightFactor,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
@@ -162,8 +162,8 @@ class MenteeScreen extends StatelessWidget {
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                 ),
-                                height: 40,
-                                width: 40,
+                                height: 40 * heightFactor,
+                                width: 40 * widthFactor,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(100))),
@@ -177,7 +177,7 @@ class MenteeScreen extends StatelessWidget {
                             }
                           },
                         ),
-                        SizedBox(width: 5),
+                        SizedBox(width: 5 * widthFactor),
                         FutureBuilder(
                           future: getUsers(),
                           builder: (context, snapshot) {
@@ -186,11 +186,11 @@ class MenteeScreen extends StatelessWidget {
                                 new TextSpan(
                                   style: TextStyle(
                                     fontFamily: 'Segoe UI',
-                                    fontSize: 23 * 1.0000000,
+                                    fontSize: 24 * widthFactor,
                                     color: const Color(0xff707070),
                                   ),
                                   children: [
-                                    new TextSpan(text: 'Hello, '),
+                                    new TextSpan(text: ''),
                                     new TextSpan(
                                       text: '${snapshot.data[0]}',
                                       style: new TextStyle(
@@ -209,14 +209,23 @@ class MenteeScreen extends StatelessWidget {
                             }
                           },
                         ),
-                        SizedBox(width: 20 * widthFactor),
+                        SizedBox(width: 38 * widthFactor),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              Image(
-                                  width: 30 * widthFactor,
-                                  image:
-                                      AssetImage('assets/images/settings.png')),
+                              GestureDetector(
+                                  child: Image(
+                                      width: 30 * widthFactor,
+                                      image: AssetImage(
+                                          'assets/images/settings.png')),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SettingsScreen()),
+                                    );
+                                  }),
                               SizedBox(width: 10 * widthFactor),
                               GestureDetector(
                                 child: Image(
@@ -224,7 +233,7 @@ class MenteeScreen extends StatelessWidget {
                                     image: AssetImage(
                                         'assets/images/profile.png')),
                                 onTap: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditProfile()),
@@ -245,54 +254,63 @@ class MenteeScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.0 * heightFactor,
                     ),
-                    Container(
-                      height: 125,
-                      width: 400,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.red[500],
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Mentors',
-                              style: TextStyle(
-                                  color: Constants.darkgray, fontSize: 25),
-                            ),
-                            Text(
-                              'View and manage your Mentors',
-                              style: TextStyle(color: Constants.darkgray),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
                     GestureDetector(
                         child: Container(
-                          height: 125,
-                          width: 400,
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                color: Colors.red[500],
+                                color: Constants.mainblue,
                               ),
                               color: Colors.white,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15))),
                           child: Padding(
-                            padding: EdgeInsets.all(20.0),
+                            padding: EdgeInsets.all(20.0 * widthFactor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Mentors',
+                                  style: TextStyle(
+                                      color: Constants.darkgray, fontSize: 25),
+                                ),
+                                Text(
+                                  'View and manage your Mentors',
+                                  style: TextStyle(color: Constants.darkgray),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MentorFind()));
+                        }),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                        child: Container(
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Constants.mainblue,
+                              ),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0 * widthFactor),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   'Messages',
                                   style: TextStyle(
-                                      color: Constants.darkgray, fontSize: 25),
+                                      color: Constants.darkgray,
+                                      fontSize: 25 * widthFactor),
                                 ),
                                 Text(
                                   'Contact your Mentors',
@@ -303,49 +321,49 @@ class MenteeScreen extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
+                            //Replacement(
                             context,
                             MaterialPageRoute(builder: (context) => ChatHome()),
                           );
                         }),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 200,
-                      width: 400,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.red[500],
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Calendar',
-                              style: TextStyle(
-                                  color: Constants.darkgray, fontSize: 25),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                      child: Container(
+                        height: 200 * heightFactor,
+                        width: 400 * widthFactor,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Constants.mainblue,
                             ),
-                            Text(
-                              'View scheduled appointments',
-                              style: TextStyle(color: Constants.darkgray),
-                            )
-                          ],
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0 * widthFactor),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Calendar',
+                                style: TextStyle(
+                                    color: Constants.darkgray,
+                                    fontSize: 25 * widthFactor),
+                              ),
+                              Text(
+                                'View scheduled appointments',
+                                style: TextStyle(color: Constants.darkgray),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      child: Text('Log Out',
-                          style: TextStyle(fontSize: 20 * heightFactor)),
-                      onTap: () async {
-                        await auth.signOut();
-                        Navigator.pushReplacement(
+                      onTap: () {
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MenuFrame()),
+                          MaterialPageRoute(
+                              builder: (context) => SearchScreen()),
                         );
-                        print('hello');
                       },
                     ),
                   ],
@@ -410,6 +428,45 @@ class MentorScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         FutureBuilder(
+                          future: getAvi(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data != null) {
+                              return Container(
+                                child: CachedNetworkImage(
+                                  imageUrl: snapshot.data,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 150.0 * widthFactor,
+                                    height: 150.0 * heightFactor,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                                height: 40 * heightFactor,
+                                width: 40 * widthFactor,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(100))),
+                              );
+                            } else {
+                              return Container(
+                                  child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Constants.mainblue),
+                              ));
+                            }
+                          },
+                        ),
+                        SizedBox(width: 5 * widthFactor),
+                        FutureBuilder(
                           future: getUsers(),
                           builder: (context, snapshot) {
                             if (snapshot.data != null) {
@@ -417,7 +474,295 @@ class MentorScreen extends StatelessWidget {
                                 new TextSpan(
                                   style: TextStyle(
                                     fontFamily: 'Segoe UI',
-                                    fontSize: 23 * 1.0000000,
+                                    fontSize: 24 * widthFactor,
+                                    color: const Color(0xff707070),
+                                  ),
+                                  children: [
+                                    new TextSpan(text: ''),
+                                    new TextSpan(
+                                      text: '${snapshot.data[0]}',
+                                      style: new TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Container(
+                                  child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Constants.mainblue),
+                              ));
+                            }
+                          },
+                        ),
+                        SizedBox(width: 38 * widthFactor),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              GestureDetector(
+                                  child: Image(
+                                      width: 30 * widthFactor,
+                                      image: AssetImage(
+                                          'assets/images/settings.png')),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SettingsScreen()),
+                                    );
+                                  }),
+                              SizedBox(width: 10 * widthFactor),
+                              GestureDetector(
+                                child: Image(
+                                    width: 30 * widthFactor,
+                                    image: AssetImage(
+                                        'assets/images/profile.png')),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfile()),
+                                  );
+                                },
+                              ),
+                            ]),
+                        //Text(
+                        //  '',
+                        //  style: TextStyle(
+                        //    fontSize: 35.0,
+                        //    fontWeight: FontWeight.normal,
+                        //    color: Color.fromRGBO(0, 90, 255, 1.0),
+                        //  ),
+                        //),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30.0 * heightFactor,
+                    ),
+                    GestureDetector(
+                        child: Container(
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Constants.mainblue,
+                              ),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0 * widthFactor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Mentors',
+                                  style: TextStyle(
+                                      color: Constants.darkgray, fontSize: 25),
+                                ),
+                                Text(
+                                  'View and manage your Mentors',
+                                  style: TextStyle(color: Constants.darkgray),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MentorFind()));
+                        }),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                        child: Container(
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Constants.mainblue,
+                              ),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0 * widthFactor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Messages',
+                                  style: TextStyle(
+                                      color: Constants.darkgray,
+                                      fontSize: 25 * widthFactor),
+                                ),
+                                Text(
+                                  'Contact your Mentors',
+                                  style: TextStyle(color: Constants.darkgray),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            //Replacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChatHome()),
+                          );
+                        }),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                      child: Container(
+                        height: 200 * heightFactor,
+                        width: 400 * widthFactor,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Constants.mainblue,
+                            ),
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0 * widthFactor),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Calendar',
+                                style: TextStyle(
+                                    color: Constants.darkgray,
+                                    fontSize: 25 * widthFactor),
+                              ),
+                              Text(
+                                'View scheduled appointments',
+                                style: TextStyle(color: Constants.darkgray),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SplashScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                )),
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/wright.jpg"),
+              fit: BoxFit.cover,
+              colorFilter: new ColorFilter.mode(
+                  Colors.black.withOpacity(0.4), BlendMode.dstATop),
+            ),
+            color: Colors.white,
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //   colors: [
+            //     Color.fromRGBO(255, 255, 255, 1.0),
+            //     Color.fromRGBO(255, 255, 255, 1.0),
+            //   ],
+            // ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BothScreen extends StatelessWidget {
+  const BothScreen({
+    Key key,
+    @required this.heightFactor,
+    @required this.widthFactor,
+  }) : super(key: key);
+
+  final double heightFactor;
+  final double widthFactor;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'MentorMatch',
+      theme: ThemeData(
+        primaryColor: Colors.white,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Material(
+        child: Container(
+          child: SafeArea(
+            child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: 20.0 * heightFactor,
+                    horizontal: 20.0 * widthFactor),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 30 * heightFactor,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        FutureBuilder(
+                          future: getAvi(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data != null) {
+                              return Container(
+                                child: CachedNetworkImage(
+                                  imageUrl: snapshot.data,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 150.0 * widthFactor,
+                                    height: 150.0 * heightFactor,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                                height: 40 * heightFactor,
+                                width: 40 * widthFactor,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(100))),
+                              );
+                            } else {
+                              return Container(
+                                  child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Constants.mainblue),
+                              ));
+                            }
+                          },
+                        ),
+                        SizedBox(width: 5 * widthFactor),
+                        FutureBuilder(
+                          future: getUsers(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data != null) {
+                              return Text.rich(
+                                new TextSpan(
+                                  style: TextStyle(
+                                    fontFamily: 'Segoe UI',
+                                    fontSize: 23 * widthFactor,
                                     color: const Color(0xff707070),
                                   ),
                                   children: [
@@ -449,10 +794,19 @@ class MentorScreen extends StatelessWidget {
                                   image:
                                       AssetImage('assets/images/settings.png')),
                               SizedBox(width: 10 * widthFactor),
-                              Image(
-                                  width: 30 * widthFactor,
-                                  image:
-                                      AssetImage('assets/images/profile.png')),
+                              GestureDetector(
+                                child: Image(
+                                    width: 30 * widthFactor,
+                                    image: AssetImage(
+                                        'assets/images/profile.png')),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfile()),
+                                  );
+                                },
+                              ),
                             ]),
                         //Text(
                         //  '',
@@ -468,23 +822,24 @@ class MentorScreen extends StatelessWidget {
                       height: 30.0 * heightFactor,
                     ),
                     Container(
-                      height: 125,
-                      width: 400,
+                      height: 125 * heightFactor,
+                      width: 400 * widthFactor,
                       decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.red[500],
+                            color: Constants.mainblue,
                           ),
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(15))),
                       child: Padding(
-                        padding: EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.0 * widthFactor),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               'Mentees',
                               style: TextStyle(
-                                  color: Constants.darkgray, fontSize: 25),
+                                  color: Constants.darkgray,
+                                  fontSize: 25 * widthFactor),
                             ),
                             Text(
                               'View and manage your Mentees',
@@ -494,73 +849,150 @@ class MentorScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Container(
-                      height: 125,
-                      width: 400,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.red[500],
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Messages',
-                              style: TextStyle(
-                                  color: Constants.darkgray, fontSize: 25),
-                            ),
-                            Text(
-                              'Contact your Mentees',
-                              style: TextStyle(color: Constants.darkgray),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 200,
-                      width: 400,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.red[500],
-                          ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              'Calendar',
-                              style: TextStyle(
-                                  color: Constants.darkgray, fontSize: 25),
-                            ),
-                            Text(
-                              'View scheduled appointments',
-                              style: TextStyle(color: Constants.darkgray),
-                            )
-                          ],
-                        ),
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        child: Text('Log Out',
+                            style: TextStyle(fontSize: 20 * heightFactor)),
+                        onTap: () async {
+                          await auth.signOut();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MenuFrame()),
+                          );
+                          print('hello');
+                        },
                       ),
                     ),
                     GestureDetector(
-                      child: Text('Log Out',
-                          style: TextStyle(fontSize: 20 * heightFactor)),
-                      onTap: () async {
-                        await auth.signOut();
-                        Navigator.pushReplacement(
+                        child: Container(
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Constants.mainblue,
+                              ),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0 * widthFactor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Mentors',
+                                  style: TextStyle(
+                                      color: Constants.darkgray, fontSize: 25),
+                                ),
+                                Text(
+                                  'View and manage your Mentors',
+                                  style: TextStyle(color: Constants.darkgray),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MentorFind()));
+                        }),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                        child: Container(
+                          height: 125 * heightFactor,
+                          width: 400 * widthFactor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Constants.mainblue,
+                              ),
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.all(20.0 * widthFactor),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Messages',
+                                  style: TextStyle(
+                                      color: Constants.darkgray,
+                                      fontSize: 25 * widthFactor),
+                                ),
+                                Text(
+                                  'Contact your Mentors',
+                                  style: TextStyle(color: Constants.darkgray),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChatHome()),
+                          );
+                        }),
+                    SizedBox(height: 20 * heightFactor),
+                    GestureDetector(
+                      child: Container(
+                        height: 200 * heightFactor,
+                        width: 400 * widthFactor,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Constants.mainblue,
+                            ),
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0 * widthFactor),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                'Calendar',
+                                style: TextStyle(
+                                    color: Constants.darkgray,
+                                    fontSize: 25 * widthFactor),
+                              ),
+                              Text(
+                                'View scheduled appointments',
+                                style: TextStyle(color: Constants.darkgray),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MenuFrame()),
+                          MaterialPageRoute(
+                              builder: (context) => SplashScreen()),
                         );
-                        print('hello');
                       },
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        child: Text('Log Out',
+                            style: TextStyle(fontSize: 20 * heightFactor)),
+                        onTap: () async {
+                          await auth.signOut();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MenuFrame()),
+                          );
+                          print('hello');
+                        },
+                      ),
                     ),
                   ],
                 )),

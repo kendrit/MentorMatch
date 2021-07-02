@@ -1,14 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mentor_match/HomeScreen.dart';
 import 'package:mentor_match/menu_frame.dart';
 import 'package:mentor_match/models/user_model.dart';
+import 'package:mentor_match/screens/splash_screen.dart';
 import 'constants.dart';
+import 'firebase_notification_handler.dart';
 
 final FirebaseAuth auth = FirebaseAuth.instance;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
   runApp(MyApp());
 }
 
@@ -74,16 +78,15 @@ class MyApp extends StatelessWidget {
 
         // Otherwise, show something whilst waiting for initialization to complete
         print('waiting...');
-        return MaterialApp(
-            home: new Scaffold(
-                backgroundColor: Colors.white,
-                body: Container(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Constants.mainblue),
-                  ),
-                )));
+        return SplashScreen();
       },
     );
   }
+}
+
+Future<void> _backgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handle background service $message');
+  dynamic data = message.data['data'];
+  FirebaseNotifications.showNotification(data['title'], data['body']);
 }
