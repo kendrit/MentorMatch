@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mentor_match/HomeScreen.dart';
 import 'package:mentor_match/constants.dart';
 import 'package:mentor_match/scripts/database_handler.dart';
 
@@ -30,7 +31,8 @@ class _SearchScreenState extends State<SearchScreen> {
             itemBuilder: (context, index) {
               return SearchRow(
                   userName: searchSnapshot.docs[index].data()["full_name"],
-                  userEmail: searchSnapshot.docs[index].data()["email"]);
+                  userEmail: searchSnapshot.docs[index].data()["email"],
+                  requestedUserId: searchSnapshot.docs[index].id);
             },
           )
         : Container();
@@ -89,24 +91,37 @@ class _SearchScreenState extends State<SearchScreen> {
 class SearchRow extends StatelessWidget {
   final String userName;
   final String userEmail;
-  SearchRow({this.userName, this.userEmail});
+  final String requestedUserId;
+  createMatch(String matcheduserid) {
+    if (getUsers("status") == "Mentor") {
+      List<String> _users = [auth.currentUser.uid, matcheduserid];
+      String matchId = _users[0].toString() + "_" + _users[1].toString();
+      print(matchId);
+      Map<String, dynamic> matchMap = {
+        "users": _users,
+        "matchId": matchId,
+        "time": DateTime.now(),
+      };
+      DatabaseHandler().createMatch(matchId, matchMap);
+    } else {
+      List<String> _users = [matcheduserid, auth.currentUser.uid];
+      String matchId = _users[0].toString() + "_" + _users[1].toString();
+      print(matchId);
+      Map<String, dynamic> matchMap = {
+        "users": _users,
+        "matchId": matchId,
+        "time": DateTime.now(),
+      };
+      DatabaseHandler().createMatch(matchId, matchMap);
+    }
+    //Navigator.push(context, MaterialPageRoute(
+    //builder: (context) => ChatScreen()))
+  }
+
+  SearchRow({this.userName, this.userEmail, this.requestedUserId});
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
-      children: [
-        Column(children: [Text(userName), Text(userEmail)]),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-            decoration: BoxDecoration(
-                color: Constants.mainblue,
-                borderRadius: BorderRadius.circular(30)),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child:
-                Text("Message", style: TextStyle(color: Constants.maingreen))),
-      ],
-    ));
+    if (DatabaseHandler()
+        .doesMatchExist(auth.currentUser.uid, requestedUserId)) {}
   }
 }

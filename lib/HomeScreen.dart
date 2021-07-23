@@ -17,6 +17,8 @@ import 'register_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 
+import 'scripts/database_handler.dart';
+
 final FirebaseAuth auth = FirebaseAuth.instance;
 CollectionReference users = FirebaseFirestore.instance.collection('users');
 var fullname;
@@ -29,18 +31,44 @@ checkUser() async {
   ];
 }
 
+getMatches(String userid) async {
+  DatabaseHandler().getUserMatches(userid);
+}
+
 String aviUrl;
 String shtatus;
 
-getUsers() async {
+getUsers([String request, String userQuery]) async {
   final DocumentSnapshot doc = await users.doc(auth.currentUser.uid).get();
-  return [doc.get('full_name').toString(), doc.get('status').toString()];
+  if (userQuery == null) {
+    if (request != null) {
+      return [doc.get(request).toString()];
+    } else {
+      return [doc.get('full_name').toString(), doc.get('status').toString()];
+    }
+  } else {
+    final DocumentSnapshot requestedUser = await users.doc(userQuery).get();
+    if (request != null) {
+      return [requestedUser.get(request).toString()];
+    } else {
+      return [
+        requestedUser.get('full_name').toString(),
+        requestedUser.get('status').toString()
+      ];
+    }
+  }
 }
 
-getAvi() async {
-  return await firebase_storage.FirebaseStorage.instance
-      .ref('images/' + auth.currentUser.uid)
-      .getDownloadURL();
+getAvi([String userid]) async {
+  if (userid != null) {
+    return await firebase_storage.FirebaseStorage.instance
+        .ref('images/' + userid)
+        .getDownloadURL();
+  } else {
+    return await firebase_storage.FirebaseStorage.instance
+        .ref('images/' + auth.currentUser.uid)
+        .getDownloadURL();
+  }
 }
 
 class HomeScreen extends StatelessWidget {

@@ -1,3 +1,5 @@
+import 'package:mentor_match/HomeScreen.dart';
+
 class User {
   final int id;
   final String name;
@@ -15,8 +17,8 @@ class User {
 // YOU - current user
 final User currentUser = User(
   id: 0,
-  name: 'Mentor',
-  imageUrl: 'assets/images/MM_LogoRect.png',
+  name: getUsers("full_name"),
+  imageUrl: getAvi(),
   isOnline: true,
 );
 

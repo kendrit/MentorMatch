@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:mentor_match/models/message_model.dart';
 import 'package:mentor_match/models/user_model.dart';
+import 'package:mentor_match/scripts/database_handler.dart';
+import 'package:mentor_match/HomeScreen.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String chatRoomId;
   final User user;
-
-  ChatScreen({this.user});
+  ChatScreen({this.chatRoomId, this.user});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  DatabaseHandler databaseHandler = new DatabaseHandler();
+  TextEditingController messageController = new TextEditingController();
+  sendMessage(
+    String message,
+  ) {
+    Map<String, String> messageMap = {
+      "message": messageController.text,
+      "sender": getUsers()
+    };
+  }
+
   _chatBubble(Message message, bool isMe, bool isSameUser) {
     if (isMe) {
       return Column(

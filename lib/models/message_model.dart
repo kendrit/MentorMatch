@@ -33,4 +33,10 @@ List<Message> messages = [
     text: 'Remember to get all A\'s this semester',
     unread: true,
   ),
+  Message(
+    sender: doris,
+    time: '5:30 PM',
+    text: 'Remember to get all A\'s this semester',
+    unread: true,
+  ),
 ];
