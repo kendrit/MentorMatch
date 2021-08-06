@@ -2,16 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mentor_match/constants.dart';
+import 'package:mentor_match/quiz_page2_mentee.dart';
 import 'login_screen.dart';
+import 'quiz_page2_mentor.dart';
 import 'register_screen.dart';
 import 'quiz_page1.dart';
 import 'QuizEnd.dart';
 
-class CustomRadio extends StatefulWidget {
+class QuizPage1 extends StatefulWidget {
+  QuizPage1(String status);
+
   @override
   createState() {
-    return new CustomRadioState();
+    return new QuizPage1State();
   }
 }
 
@@ -23,43 +28,40 @@ Future<void> _addUser(String label, String value) async {
       (error) => userdata.doc(auth.currentUser.uid).set({label: value}));
 }
 
-class CustomRadioState extends State<CustomRadio> {
+class QuizPage1State extends State<QuizPage1> {
   List<RadioModel> questiondata1 = new List<RadioModel>();
   List<RadioModel> questiondata2 = new List<RadioModel>();
   List<RadioModel> questiondata3 = new List<RadioModel>();
   List<QuestionList> question = new List<QuestionList>();
 
+  final ageController = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    questiondata1.add(new RadioModel(false, 'Very Unlikely', "1"));
-    questiondata1.add(new RadioModel(false, 'Unlikely', "2"));
-    questiondata1.add(new RadioModel(false, 'Not Sure', "3"));
-    questiondata1.add(new RadioModel(false, 'Likely', "4"));
-    questiondata1.add(new RadioModel(false, 'Very Likely', "5"));
-    questiondata2.add(new RadioModel(false, '0-1', "1"));
-    questiondata2.add(new RadioModel(false, '2', "2"));
-    questiondata2.add(new RadioModel(false, '3', "3"));
-    questiondata2.add(new RadioModel(false, '4', "4"));
-    questiondata2.add(new RadioModel(false, '5+', "5"));
-    questiondata3.add(new RadioModel(false, 'Aerospace Engineering', 'AERO'));
-    questiondata3.add(new RadioModel(false, 'Bioengineering', 'BIO'));
-    questiondata3.add(new RadioModel(false, 'Civil Engineering', 'CIVIL'));
-    questiondata3.add(new RadioModel(false, 'Computer Engineering', 'CE'));
-    questiondata3.add(new RadioModel(false, 'Computer Science', 'CS'));
-    questiondata3.add(new RadioModel(false, 'Electrical Engineering', 'EE'));
-    questiondata3.add(new RadioModel(false, 'Engineering Mechanics', 'EM'));
-    questiondata3.add(new RadioModel(false, 'Physics', 'PHYS'));
-    questiondata3.add(new RadioModel(false, 'Industrial Engineering', 'IE'));
-    questiondata3.add(new RadioModel(false, 'Mechanical Engineering', 'ME'));
-    questiondata3
-        .add(new RadioModel(false, 'Systems Engineering and Design', 'SYS'));
+    questiondata1.add(new RadioModel(false, "Male", "male"));
+    questiondata1.add(new RadioModel(false, "Female", "female"));
+    questiondata1.add(new RadioModel(false, "Non-Binary", "nonbinary"));
+    questiondata1
+        .add(new RadioModel(false, "Prefer not to say", "prefernottosay"));
+    questiondata2.add(new RadioModel(false, "White", "white"));
+    questiondata2.add(new RadioModel(false, "Black", "black"));
+    questiondata2.add(new RadioModel(false, "Hispanic/Latinx", "latinx"));
+    questiondata2.add(new RadioModel(false, "Asian", "asian"));
+    questiondata2.add(new RadioModel(false, "Native American", "native"));
+    questiondata2.add(new RadioModel(false, "Pacific Islander", "pacific"));
+    questiondata2.add(new RadioModel(false, "Other", "other"));
+    questiondata3.add(new RadioModel(false, "Associates", "associates"));
+    questiondata3.add(new RadioModel(false, "Bachelors", "bachelors"));
+    questiondata3.add(new RadioModel(false, "Masters", "masters"));
+    questiondata3.add(new RadioModel(false, "Ph.D", "phd"));
+    question.add(new QuestionList('How', ' old are you?', 'age'));
     question.add(
-        new QuestionList('How likely are you to', ' be a leader?', 'leader'));
-    question.add(new QuestionList(
-        'How many STEM courses', ' have you taken?', 'stemtaken'));
-    question.add(new QuestionList('What is your', ' planned major?', 'major'));
+        new QuestionList('Which gender ', 'do you identify with?', 'gender'));
+    question.add(new QuestionList('What is your', ' ethnicity?', 'ethnicity'));
+    question.add(new QuestionList('What is the ',
+        'highest level of education that you have earned?', 'education'));
   }
 
   @override
@@ -127,6 +129,18 @@ class CustomRadioState extends State<CustomRadio> {
                     child: Column(
                   children: <Widget>[
                     new Question(question[0]),
+                    Container(
+                      child: new TextField(
+                        controller: ageController,
+                        decoration: new InputDecoration(labelText: "Age"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ], // Only numbers can be entered
+                      ),
+                    ),
+                    SizedBox(height: 10 * heightFactor),
+                    new Question(question[1]),
                     SizedBox(height: 10 * heightFactor),
                     Container(
                       height: 100 * heightFactor,
@@ -147,12 +161,11 @@ class CustomRadioState extends State<CustomRadio> {
                                           false); //sets all buttons, including itself, to "false"
                                       questiondata1[index].isSelected =
                                           true; //sets itself to "true"
-                                      _addUser(question[0].value,
+                                      _addUser(question[1].value,
                                           questiondata1[index].value);
-                                      print(questiondata1);
                                     });
                                   },
-                                  child: new RadioItem(questiondata1[index]),
+                                  child: new RadioItem2(questiondata1[index]),
                                 ),
                               ],
                             ),
@@ -160,7 +173,7 @@ class CustomRadioState extends State<CustomRadio> {
                         },
                       ),
                     ),
-                    new Question(question[1]),
+                    new Question(question[2]),
                     SizedBox(height: 10 * heightFactor),
                     Container(
                       height: 100 * heightFactor,
@@ -181,9 +194,9 @@ class CustomRadioState extends State<CustomRadio> {
                                           false); //sets all buttons, including itself, to "false"
                                       questiondata2[index].isSelected =
                                           true; //sets itself to "true"
-                                      _addUser(question[1].value,
-                                          questiondata2[index].value);
                                     });
+                                    _addUser(question[2].value,
+                                        questiondata2[index].value);
                                   },
                                   child: new RadioItem2(questiondata2[index]),
                                 ),
@@ -193,47 +206,58 @@ class CustomRadioState extends State<CustomRadio> {
                         },
                       ),
                     ),
-                    new Question(question[2]),
+                    new Question(question[3]),
                     SizedBox(height: 10 * heightFactor),
                     Container(
-                      height: 190 * heightFactor,
+                      height: 100 * heightFactor,
                       child: new ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: questiondata3.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            child: Column(
-                              children: <Widget>[
-                                GestureDetector(
-                                  //highlightColor: Colors.blue,
-                                  //splashColor: Colors.blueAccent,
-                                  onTap: () {
-                                    setState(() {
-                                      questiondata3.forEach((element) => element
-                                              .isSelected =
-                                          false); //sets all buttons, including itself, to "false"
-                                      questiondata3[index].isSelected =
-                                          true; //sets itself to "true"
-                                    });
-                                    _addUser(question[2].value,
-                                        questiondata3[index].value);
-                                  },
-                                  child: new RadioItem3(questiondata3[index]),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: questiondata3.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              child: Column(
+                                children: <Widget>[
+                                  GestureDetector(
+                                    //highlightColor: Colors.blue,
+                                    //splashColor: Colors.blueAccent,
+                                    onTap: () {
+                                      setState(() {
+                                        questiondata3.forEach((element) => element
+                                                .isSelected =
+                                            false); //sets all buttons, including itself, to "false"
+                                        questiondata3[index].isSelected =
+                                            true; //sets itself to "true"
+                                      });
+                                      _addUser(question[3].value,
+                                          questiondata3[index].value);
+                                      _addUser(question[0].value,
+                                          ageController.text);
+                                    },
+                                    child: new RadioItem2(questiondata3[index]),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                     ),
                   ],
                 )),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QuizEnd()),
-                    );
+                    if (status == "Mentee") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MenteeQuizPage2()),
+                      );
+                    }
+                    if (status == "Mentor") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MentorQuizPage2()),
+                      );
+                    }
                   },
                   child: Align(
                     alignment: Alignment.centerRight,

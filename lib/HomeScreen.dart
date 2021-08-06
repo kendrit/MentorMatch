@@ -93,7 +93,6 @@ class HomeScreen extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          String shtatus = snapshot.data[2];
           if (auth.currentUser != null) {
             print('signedt in!');
             if (snapshot.data[2] == 'Mentee') {
@@ -678,7 +677,7 @@ class MentorScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SplashScreen()),
+                              builder: (context) => SearchScreen()),
                         );
                       },
                     ),

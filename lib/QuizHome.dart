@@ -233,7 +233,8 @@ class QuizHomeState extends State<QuizHome> {
                     }
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CustomRadio()),
+                      MaterialPageRoute(
+                          builder: (context) => QuizPage1(status)),
                     );
                   },
                   child: Align(
